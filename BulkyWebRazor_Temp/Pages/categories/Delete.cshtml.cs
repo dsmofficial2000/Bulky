@@ -2,37 +2,36 @@ using BulkyWebRazor_Temp.Data;
 using BulkyWebRazor_Temp.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BulkyWebRazor_Temp.Pages.categories
 {
     [BindProperties]
-    public class EditModel : PageModel
+    public class DeleteModel : PageModel
     {
         public readonly ApplicationDbContext _db;
-        public Category? Category { get; set; }
-        public EditModel(ApplicationDbContext db)
+        public Category Category { get; set; }
+        public DeleteModel(ApplicationDbContext db)
         {
             _db = db;
         }
         public void OnGet(int? id)
         {
-            if(id != null && id != 0)
+            if (id != null && id != 0)
             {
                 Category = _db.Categories.Find(id);
             }
         }
-
         public IActionResult OnPost()
         {
-            if(ModelState.IsValid)
+            Category? obj = _db.Categories.Find(Category.Id);
+            if (obj == null)
             {
-                _db.Categories.Update(Category);
-                _db.SaveChanges();
-                TempData["success"] = "category Updated Successfully";
-                return RedirectToPage("Index");
+                return NotFound();
             }
-            return Page();
+            _db.Categories.Remove(obj);
+            _db.SaveChanges();
+            TempData["success"] = "category Deleted Successfully";
+            return RedirectToPage("Index");            
         }
     }
 }
