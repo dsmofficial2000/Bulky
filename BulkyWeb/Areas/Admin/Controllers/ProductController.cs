@@ -11,11 +11,9 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public ProductController(IUnitOfWork unitofWork, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IUnitOfWork unitofWork)
         {
             _unitOfWork = unitofWork;
-            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -49,24 +47,22 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
-            string wwwRootPath = _webHostEnvironment.WebRootPath;
-            if (file != null)
+            if (ModelState.IsValid)
             {
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string productPath = Path.Combine(wwwRootPath, @"images\product");
-
-                using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                {
-                    file.CopyTo(fileStream);
-                }
-
-                productVM.Product.ImageUrl = @"\images\product\" + fileName;
+                _unitOfWork.Product.Add(productVM.Product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
+                return RedirectToAction("Index");
             }
-
-            _unitOfWork.Product.Add(productVM.Product);
-            _unitOfWork.Save();
-            TempData["success"] = "Product created successfully";
-            return RedirectToAction("Index");            
+            else
+            {
+                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+                return View(productVM);
+            }
         }        
 
         public IActionResult Delete(int? id)
