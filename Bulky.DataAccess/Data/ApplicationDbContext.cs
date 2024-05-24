@@ -28,6 +28,7 @@ namespace BulkyBook.DataAccess.Data
                Id = 1,
                Title = "Fortune of Time",
                Author = "Billy Spark",
+               CategoryId = 1,
                Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                ISBN = "SWD9999001",
                ListPrice = 99,
@@ -40,6 +41,7 @@ namespace BulkyBook.DataAccess.Data
                Id = 2,
                Title = "Dark Skies",
                Author = "Nancy Hoover",
+               CategoryId = 1,
                Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                ISBN = "CAW777777701",
                ListPrice = 40,
@@ -52,6 +54,7 @@ namespace BulkyBook.DataAccess.Data
                Id = 3,
                Title = "Vanish in the Sunset",
                Author = "Julian Button",
+               CategoryId = 2,
                Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                ISBN = "RITO5555501",
                ListPrice = 55,
@@ -64,6 +67,7 @@ namespace BulkyBook.DataAccess.Data
                Id = 4,
                Title = "Cotton Candy",
                Author = "Abby Muscles",
+               CategoryId = 2,
                Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                ISBN = "WS3333333301",
                ListPrice = 70,
@@ -76,6 +80,7 @@ namespace BulkyBook.DataAccess.Data
                Id = 5,
                Title = "Rock in the Ocean",
                Author = "Ron Parker",
+               CategoryId = 2,
                Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                ISBN = "SOTJ1111111101",
                ListPrice = 30,
@@ -88,6 +93,7 @@ namespace BulkyBook.DataAccess.Data
                Id = 6,
                Title = "Leaves and Wonders",
                Author = "Laura Phantom",
+               CategoryId = 3,
                Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                ISBN = "FOT000000001",
                ListPrice = 25,
@@ -96,6 +102,15 @@ namespace BulkyBook.DataAccess.Data
                Price100 = 20
            }
            );
+           modelBuilder.Entity("BulkyBook.Models.Product", b =>
+           {
+               b.HasOne("BulkyBook.Models.Category", "Category")
+               .WithMany()
+               .HasForeignKey("CategoryId")
+               .OnDelete(DeleteBehavior.Cascade)
+               .IsRequired();
+                b.Navigation("Category");
+            });
         }
     }
 }
