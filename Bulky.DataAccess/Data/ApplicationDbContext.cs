@@ -13,6 +13,7 @@ namespace BulkyBook.DataAccess.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         //insert data into table using Entity Framework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
