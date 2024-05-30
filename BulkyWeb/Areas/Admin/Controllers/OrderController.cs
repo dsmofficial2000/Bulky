@@ -1,9 +1,11 @@
 ﻿using BulkyBook.DataAccess.Repositiory;
 using BulkyBook.DataAccess.Repositiory.IRepositiory;
 using BulkyBook.Models;
+using BulkyBook.Models.ViewModels;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using System.Diagnostics;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
@@ -22,6 +24,15 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult Details (int orderId)
+        {
+            OrderVM orderVM = new()
+            {
+                orderHeader = _unitOfWork.OrderHeader.Get(u=>u.Id == orderId,includeProperties: "ApplicationUser"),
+                orderDetails = _unitOfWork.OrderDetail.GetAll(u=>u.OrderHeaderId == orderId, includeProperties: "Product")
+            };
+            return View(orderVM);
+        }        
         #region API CALLS
 
         [HttpGet]
