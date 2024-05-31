@@ -27,9 +27,9 @@
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
-                                <div class="col-9">                                    
+                                <div class="col-9">
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
-                                    {                                        
+                                    {
                                         <input asp-for="orderHeader.Name" type="text" class="form-control" />
                                         <span asp-validation-for="orderHeader.Name" class="text-danger"></span>
                                     }
@@ -127,7 +127,7 @@
                                 <div class="col-9">
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                                     {
-                                        <input asp-for="orderHeader.Carrier" type="text" class="form-control" />
+                                        <input asp-for="orderHeader.Carrier" id="carrier" type="text" class="form-control" />
                                     }
                                     else
                                     {
@@ -140,7 +140,7 @@
                                 <div class="col-9">
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                                     {
-                                        <input asp-for="orderHeader.TrackingNumber" type="text" class="form-control" />
+                                        <input asp-for="orderHeader.TrackingNumber" id="trackingNumber" type="text" class="form-control" />
                                     }
                                     else
                                     {
@@ -248,16 +248,19 @@
                             {
                                 @if (Model.orderHeader.OrderStatus == SD.StatusApproved)
                                 {
-                                    <button type="submit" class="btn btn-primary form-control my-1">Start Processing</button>
+                                    <button type="submit" asp-action="StartProcessing"
+                                            class="btn btn-primary form-control my-1">
+                                        Start Processing
+                                    </button>
                                 }
                                 @if (Model.orderHeader.OrderStatus == SD.StatusInProcess)
                                 {
-                                    <button type="submit" class="btn btn-primary form-control my-1">Ship Order</button>
+                                    <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-primary form-control my-1">Ship Order</button>
                                 }
 
                                 @if (Model.orderHeader.OrderStatus != SD.StatusRefunded &&
-                               Model.orderHeader.OrderStatus != SD.StatusCancelled &&
-                               Model.orderHeader.OrderStatus != SD.StatusShipped)
+                                     Model.orderHeader.OrderStatus != SD.StatusCancelled &&
+                                     Model.orderHeader.OrderStatus != SD.StatusShipped)
                                 {
                                     <button type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
                                 }
@@ -269,3 +272,31 @@
         </div>
     </div>
 </form>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput() {
+            if (document.getElementById("trackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter tracking number!',
+                });
+                return false;
+            }
+            if (document.getElementById("carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter carrier!',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+}
