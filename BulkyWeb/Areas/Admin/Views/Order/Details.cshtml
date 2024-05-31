@@ -27,9 +27,9 @@
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
-                                <div class="col-9">
+                                <div class="col-9">                                    
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
-                                    {
+                                    {                                        
                                         <input asp-for="orderHeader.Name" type="text" class="form-control" />
                                         <span asp-validation-for="orderHeader.Name" class="text-danger"></span>
                                     }
@@ -212,20 +212,21 @@
                             <label class="btn btn-outline-primary form-control my-2">Order Status - @Model.orderHeader.OrderStatus</label>
 
                             <ul class="list-group mb-3">
-                                 @foreach(var detail in Model.orderDetails){
-                                <li class="list-group-item d-flex justify-content-between p-2">
-                                    <div class="row container">
-                                        <div class="col-8">
+                                @foreach (var detail in Model.orderDetails)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between p-2">
+                                        <div class="row container">
+                                            <div class="col-8">
 
                                                 <h6 class="my-0 text-primary">@detail.Product.Title</h6>
                                                 <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
                                                 <small class="text-muted">Quantity : @detail.Count</small>
-                                        </div>
-                                        <div class="col-4 text-end">
+                                            </div>
+                                            <div class="col-4 text-end">
                                                 <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
                                 }
                                 <li class="list-group-item bg-primary">
                                     <div class="row container">
@@ -238,10 +239,29 @@
                                     </div>
                                 </li>
                             </ul>
-                            <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
-                            <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" />
-                            <input type="submit" class="btn btn-primary form-control my-1" value="Ship Order" />
-                            <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" />
+                            @if (Model.orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment &&
+                            Model.orderHeader.OrderStatus == SD.StatusShipped)
+                            {
+                                <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
+                            }
+                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                            {
+                                @if (Model.orderHeader.OrderStatus == SD.StatusApproved)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control my-1">Start Processing</button>
+                                }
+                                @if (Model.orderHeader.OrderStatus == SD.StatusInProcess)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control my-1">Ship Order</button>
+                                }
+
+                                @if (Model.orderHeader.OrderStatus != SD.StatusRefunded &&
+                               Model.orderHeader.OrderStatus != SD.StatusCancelled &&
+                               Model.orderHeader.OrderStatus != SD.StatusShipped)
+                                {
+                                    <button type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
