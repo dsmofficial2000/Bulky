@@ -41,8 +41,7 @@ namespace BulkyBook.DataAccess.Data
                ListPrice = 99,
                Price = 90,
                Price50 = 85,
-               Price100 = 80,
-               ImageUrl = ""
+               Price100 = 80
            },
            new Product
            {
@@ -55,8 +54,7 @@ namespace BulkyBook.DataAccess.Data
                ListPrice = 40,
                Price = 30,
                Price50 = 25,
-               Price100 = 20,
-               ImageUrl = ""
+               Price100 = 20
            },
            new Product
            {
@@ -69,8 +67,7 @@ namespace BulkyBook.DataAccess.Data
                ListPrice = 55,
                Price = 50,
                Price50 = 40,
-               Price100 = 35,
-               ImageUrl = ""
+               Price100 = 35
            },
            new Product
            {
@@ -83,8 +80,7 @@ namespace BulkyBook.DataAccess.Data
                ListPrice = 70,
                Price = 65,
                Price50 = 60,
-               Price100 = 55,
-               ImageUrl = ""
+               Price100 = 55
            },
            new Product
            {
@@ -97,8 +93,7 @@ namespace BulkyBook.DataAccess.Data
                ListPrice = 30,
                Price = 27,
                Price50 = 25,
-               Price100 = 20,
-               ImageUrl = ""
+               Price100 = 20
            },
            new Product
            {
@@ -111,8 +106,7 @@ namespace BulkyBook.DataAccess.Data
                ListPrice = 25,
                Price = 23,
                Price50 = 22,
-               Price100 = 20,
-               ImageUrl = ""
+               Price100 = 20
            }
            );
            modelBuilder.Entity("BulkyBook.Models.Product", b =>
