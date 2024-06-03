@@ -23,7 +23,7 @@ namespace BulkyBook.Utility
             //logic to send Email
             var client = new SendGridClient(SendGridSecret);
 
-            var from = new EmailAddress("durgesh.m@samcomtechnobrains.com", "Bulk Book");
+            var from = new EmailAddress("durgesh.m@samcomtechnobrains.com", "Bulky Book");
             var to = new EmailAddress(email);
             var message = MailHelper.CreateSingleEmail(from, to, subject, "", htmlMessage);
 

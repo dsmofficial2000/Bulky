@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using BulkyBook.Utility;
 using Stripe.Checkout;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 
 namespace BulkyBookWeb.Areas.Customer.Controllers
@@ -16,11 +17,13 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
-		[BindProperty]
+        private readonly IEmailSender _emailSender;
+        [BindProperty]
 		public ShoppingCartVM ShoppingCartVM { get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
         }
 
 
@@ -186,6 +189,9 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 }
                 HttpContext.Session.Clear();
             }
+
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book",
+               $"<p>New Order Created - {orderHeader.Id}</p>");
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
                 .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
