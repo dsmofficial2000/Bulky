@@ -45,8 +45,8 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             }
             else
             {
-                //update
-                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                //update                
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id, includeProperties: "ProductImages");
                 return View(productVM);
             }
         }    
@@ -92,7 +92,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                         };
 
                         if (productVM.Product.ProductImages == null)
-                            productVM.Product.ProductImages = new List<ProductImage>();
+                            productVM.Product.ProductImages = new List<ProductImage>();                            
 
                         productVM.Product.ProductImages.Add(productImage);
 
