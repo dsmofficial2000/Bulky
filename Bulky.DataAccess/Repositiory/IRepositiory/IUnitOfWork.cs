@@ -15,6 +15,7 @@ namespace BulkyBook.DataAccess.Repositiory.IRepositiory
         IOrderDetailRepository OrderDetail { get; }
         IOrderHeaderRepository OrderHeader { get; }
         IApplicationUserRepository ApplicationUser { get; }
+        IProductImageRepository ProductImage { get; }
         void Save();
     }
 }
